@@ -133,9 +133,9 @@ var MultipleDatePickerComponent = (function () {
             day.mdp.selected = !day.mdp.selected;
             if (day.mdp.selected) {
                 this.projectScope.push(day.date);
-                // console.log('this project scope = ' + this.projectScope); // for testing keep!
             }
             else {
+
                 var idx = -1;
                 for (var i = 0; i < this.projectScope.length; ++i) {
                     if (moment.isMoment(this.projectScope[i])) {
@@ -154,6 +154,21 @@ var MultipleDatePickerComponent = (function () {
                 if (idx !== -1) {
                     this.projectScope.splice(idx, 1);
                 }
+
+                // 1368 CHANGE
+                // Addition
+                var idxH = -1;
+                for (var i = 0; i < this.highlightDays.length; ++i) {
+                    if (this.highlightDays[i].date.isSame(day.date, 'day')) {
+                        idxH = i;
+                        break;
+                    }
+                }
+                if (idxH !== -1) {
+                    this.highlightDays.splice(idxH, 1);
+                }
+                this.generate();
+                // End Addition
             }
         }
         this.propagateChange(this.projectScope);
@@ -184,26 +199,32 @@ var MultipleDatePickerComponent = (function () {
         if (day.mdp.selected) {
             css += ' picker-selected';
         }
-        if (!day.selectable) {
+        // 1368 CHANGE
+        // Original
+        // if (!day.selectable) {
+        //     css += ' picker-off';
+        // }
+        // New
+        if (!day.selectable && day.mdp.past) {
             css += ' picker-off';
         }
+
         if (day.mdp.today) {
             if (this.highlightDays !== undefined && this.highlightDays.length > 0) {
-                var arrayObject = this.highlightDays.find(function (highlightDay) {
-                    if (highlightDay.date) {
-                        return (moment(highlightDay.date).startOf('day')).isSame(moment(day.date).startOf('day'));
-                    }
-                });
-                if (arrayObject !== undefined) {
+                var arrayObject = this.highlightDays.find(function (x) { return x.css; });
+                // let index = this.highlightDays.indexOf(arrayObject); // gives number of occurenses in array
+                var arrayKeys = Object.keys(this.highlightDays);
+                if (arrayObject !== undefined && arrayKeys.length > 0) {
                     var highlightDayCss = arrayObject.css;
-                    css += ' today ' + highlightDayCss;
+                    // 1368 CHANGE
+                    // // Original
+                    // css += ' today ' + highlightDayCss;
+                    // New
+                    css += ' today ';
                 }
                 else {
                     css += ' today ';
                 }
-            }
-            else {
-                css += ' today ';
             }
         }
         if (day.mdp.past) {
@@ -266,9 +287,17 @@ var MultipleDatePickerComponent = (function () {
     };
     /*Check if the date is selected*/
     MultipleDatePickerComponent.prototype.isSelected = function (day) {
-        return this.projectScope.some(function (d) {
-            return day.date.isSame(d, 'day');
-        });
+        // 1368 CHANGE
+        // // Original
+        // return this.projectScope.some(function (d) { 
+        //     return day.date.isSame(d, 'day'); 
+        // });
+        // New
+        return (
+            this.projectScope.some(function (d) { return day.date.isSame(d, 'day'); })
+            ||
+            this.highlightDays.some(function (d) { return day.date.isSame(d.date, 'day'); })
+        );
     };
     /*Generate the calendar*/
     MultipleDatePickerComponent.prototype.generate = function () {
@@ -327,18 +356,20 @@ var MultipleDatePickerComponent = (function () {
         console.log('this.projectScope = ' + this.projectScope);
     };
     MultipleDatePickerComponent.decorators = [
-        { type: core_1.Component, args: [{
-                    selector: 'multiple-date-picker',
-                    template: template_1.DEFAULT_TEMPLATE,
-                    styles: [template_1.DEFAULT_STYLES],
-                    providers: [
-                        {
-                            provide: forms_1.NG_VALUE_ACCESSOR,
-                            useExisting: core_1.forwardRef(function () { return MultipleDatePickerComponent; }),
-                            multi: true
-                        }
-                    ]
-                },] },
+        {
+            type: core_1.Component, args: [{
+                selector: 'multiple-date-picker',
+                template: template_1.DEFAULT_TEMPLATE,
+                styles: [template_1.DEFAULT_STYLES],
+                providers: [
+                    {
+                        provide: forms_1.NG_VALUE_ACCESSOR,
+                        useExisting: core_1.forwardRef(function () { return MultipleDatePickerComponent; }),
+                        multi: true
+                    }
+                ]
+            },]
+        },
     ];
     /** @nocollapse */
     MultipleDatePickerComponent.ctorParameters = function () { return []; };
