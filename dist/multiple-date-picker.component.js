@@ -155,7 +155,7 @@ var MultipleDatePickerComponent = (function () {
                     this.projectScope.splice(idx, 1);
                 }
 
-                // 1368 CHANGE
+                // 1368 CHANGE ABCD
                 // Addition
                 var idxH = -1;
                 for (var i = 0; i < this.highlightDays.length; ++i) {
