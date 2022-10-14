@@ -5,11 +5,11 @@ export declare class MultipleDatePickerComponent implements OnInit, ControlValue
     highlightDays: Array<any>;
     dayClick: any;
     dayHover: string;
-    rightClick: string;
+    rightClick: any;
     monthChanged: any;
     fontAwesome: boolean;
     matIcons: boolean;
-    monthClick: string;
+    monthClick: any;
     weekDaysOff: Array<number>;
     allDaysOff: string;
     daysAllowed: any;

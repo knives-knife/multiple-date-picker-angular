@@ -1,6 +1,6 @@
 {
   "name": "multiple-date-picker-angular",
-  "version": "3.0.0",
+  "version": "3.0.3",
   "description": "Multiple Date Picker for Angular (angular 2+ / 4+ / 5+)",
   "main": "index.js",
   "scripts": {
@@ -26,7 +26,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/xtianus79/multiple-date-picker-angular"
+    "url": "https://github.com/knives-knife/multiple-date-picker-angular"
   },
   "bugs": {
     "url": "https://github.com/xtianus79/multiple-date-picker-angular/issues",
@@ -47,7 +47,7 @@
     "@angular/router": "4.3.2",
     "@ngtools/webpack": "1.5.5",
     "@types/es6-shim": "^0.31.34",
-    "@types/node": "8.0.17",
+    "@types/node": "7.0.7",
     "angular2-template-loader": "0.6.2",
     "bulma": "0.4.4",
     "core-js": "2.4.1",
